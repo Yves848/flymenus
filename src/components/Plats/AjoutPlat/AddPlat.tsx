@@ -14,6 +14,7 @@ import axios from 'axios';
 //import ImageGrid from '../../Display/ImageGrid';
 import {categories} from '../../config/categories';
 import noImage from '../../../assets/images/No-image-available.jpg';
+import { storage } from '../../config/base'
 
 
 export interface AddPlatProps {
@@ -184,6 +185,18 @@ class AddPlat extends React.Component<AddPlatProps, AddPlatState> {
     });
   };
 
+  downloadImage = async (url: string, image_path: string) => {
+    return new Promise(async (resolve, reject) => {
+      const response = await axios({
+        url,
+        method: 'GET',
+        responseType: 'stream',
+        withCredentials: true
+      })
+      console.log(response);
+    });
+  };
+
   itemRenderer = (item: any, { handleClick }: any) => {
     return (
       <div key={item.index} className="row" style={{ marginLeft: '5px' }}>
@@ -218,14 +231,23 @@ class AddPlat extends React.Component<AddPlatProps, AddPlatState> {
     });
   };
 
+  uploadImageToStorage = (plat : any) => {
+    const storageRef = storage.ref();
+    const imagesRef = storageRef.child('images/test.jpg');
+    console.log(imagesRef);
+
+  }
+
   handleAjout = () => {
     const plat = this.state.plat;
 
     if (this.state.images.length > 1) {
       plat.Image = this.state.images[this.state.imgIndex];
+      this.downloadImage(plat.Image,'');
     } else {
       plat.Image = '';
     }
+
     
     this.props.handleAjout(plat, this.props.index);
   };

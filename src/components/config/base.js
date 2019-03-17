@@ -19,4 +19,5 @@ const app = firebase.initializeApp({
 
 const base = Rebase.createClass(app.database());
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
-export {app, base, facebookProvider}
+const storage = firebase.storage();
+export {app, base, facebookProvider, storage}
